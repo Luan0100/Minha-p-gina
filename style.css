@@ -1,7 +1,7 @@
 /* Configuração geral */
 body {
     background-color: #000000; /* Fundo preto */
-    color: #FFFFFF;           /* Texto branco */
+    color: #FFFFFF;           /* Texto branco (fallback) */
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -9,10 +9,16 @@ body {
     flex-direction: column;
     align-items: center; /* Centraliza tudo */
     text-align: center;
+    
+    /* ADICIONADO: Aplica a animação */
+    animation: mudaCorTexto 3s linear infinite;
 }
 
 h1, h2 {
-    color: #FFFFFF;
+    color: #FFFFFF; /* Fallback */
+
+    /* ADICIONADO: Aplica a animação (precisa estar aqui também) */
+    animation: mudaCorTexto 3s linear infinite;
 }
 
 /* Cabeçalho e Foto de Perfil */
@@ -75,13 +81,35 @@ header {
 }
 
 .social-icons a {
-    color: #FFFFFF; /* Cor do ícone */
+    color: #FFFFFF; /* Cor do ícone (fallback) */
     font-size: 40px; /* Tamanho do ícone */
     margin: 0 15px; /* Espaçamento entre os ícones */
     text-decoration: none; /* Remove sublinhado */
+
+    /* ADICIONADO: Aplica a animação nos ícones também */
+    animation: mudaCorTexto 3s linear infinite;
 }
 
 /* Efeito ao passar o mouse */
 .social-icons a:hover {
-    color: #CCCCCC; /* Muda a cor levemente */
+    color: #CCCCCC; /* Muda a cor levemente (será sobreposto pela animação) */
+    /* Para manter um efeito hover, poderíamos aumentar o brilho, mas
+       a animação contínua já chama bastante atenção */
+}
+
+/*
+ * ========================================
+ * NOVO BLOCO DE ANIMAÇÃO ADICIONADO
+ * ========================================
+ * Define a animação "mudaCorTexto"
+ * 3s / 6 etapas = 0.5s por cor
+*/
+@keyframes mudaCorTexto {
+    0%   { color: #FF0000; } /* Vermelho */
+    16%  { color: #FFA500; } /* Laranja */
+    33%  { color: #FFFF00; } /* Amarelo */
+    50%  { color: #00FF00; } /* Verde */
+    66%  { color: #0000FF; } /* Azul */
+    83%  { color: #800080; } /* Roxo */
+    100% { color: #FF0000; } /* Volta ao Vermelho */
 }
