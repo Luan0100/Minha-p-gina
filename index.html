@@ -58,29 +58,6 @@
     com a minha irmã, Estudo no colégio Julio Szymanski 
     e faço Desenvolvimento de Sistemas.
 </p>
-
-<p id="bio-text"></p> ```
-
-**Agora, adicione este código ao seu `script.js` (dentro do `DOMContentLoaded`):**
-
-```javascript
-// --- Exemplo 3: Efeito Máquina de Escrever ---
-
-const bioTextElement = document.getElementById('bio-text');
-const fullText = "Salve negada, aqui quem vos fala é o Luan, Tenho 16 anos, Sou preto, Jogo truco pa carai, Moro com meus pais e com a minha irmã, Estudo no colégio Julio Szymanski e faço Desenvolvimento de Sistemas.";
-let charIndex = 0;
-let typingSpeed = 30; // 30ms (mais rápido)
-
-function typeWriter() {
-    if (charIndex < fullText.length) {
-        bioTextElement.innerHTML += fullText.charAt(charIndex);
-        charIndex++;
-        // Chama a função novamente após 'typingSpeed' milissegundos
-        setTimeout(typeWriter, typingSpeed);
-    }
-}
-
-// Inicia a animação de digitação
-typeWriter();
 </body>
 </html>
+
