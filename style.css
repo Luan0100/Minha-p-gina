@@ -113,3 +113,15 @@ header {
     83%  { color: #800080; } /* Roxo */
     100% { color: #FF0000; } /* Volta ao Vermelho */
 }
+/* Estilo inicial para os elementos que vão animar */
+.animate-on-scroll {
+    opacity: 0; /* Começa invisível */
+    transform: translateY(30px); /* Começa 30px para baixo */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Classe que o JavaScript vai adicionar quando o elemento aparecer */
+.animate-on-scroll.is-visible {
+    opacity: 1; /* Fica visível */
+    transform: translateY(0); /* Volta à posição original */
+}
