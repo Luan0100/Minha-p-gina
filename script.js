@@ -1,20 +1,36 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    // --- NOVO: Variáveis para a Máquina de Escrever ---
+    // --- Variáveis para a Máquina de Escrever ---
     const bioElement = document.getElementById('bio');
+    // Certifica-se de que o elemento existe antes de continuar
+    if (!bioElement) {
+        console.error("Elemento com ID 'bio' não encontrado.");
+        return; 
+    }
+
     const bioText = "Salve negada, aqui quem vos fala é o Luan, Tenho 16 anos, Sou preto, Jogo truco pa carai, Moro com meus pais e com a minha irmã, Estudo no colégio Julio Szymanski e faço Desenvolvimento de Sistemas.";
     let charIndex = 0;
     const typingSpeed = 30; // 30ms
     let hasTyped = false; // Flag para não digitar de novo
 
-    // --- NOVO: Função que faz a digitação ---
+    // --- Função que faz a digitação ---
     function typeWriter() {
-        if (bioElement && charIndex < bioText.length) {
+        // Verifica se o índice ainda está dentro do texto
+        if (charIndex < bioText.length) {
             bioElement.innerHTML += bioText.charAt(charIndex);
             charIndex++;
-            setTimeout(typeWriter, typingSpeed);
+            setTimeout(typeWriter, typingSpeed); // Chama a si mesma para o próximo caractere
         }
     }
+
+    // --- INICIAR A DIGITAÇÃO ---
+    // Verifica se a digitação já aconteceu
+    if (!hasTyped) {
+        hasTyped = true; // Define a flag como verdadeira
+        bioElement.innerHTML = ''; // Limpa o elemento caso haja algum conteúdo inicial
+        typeWriter(); // Inicia o efeito de máquina de escrever
+    }
+});
 
     // --- Exemplo 1: Animação de Entrada ao Rolar (COM ATUALIZAÇÃO) ---
 
