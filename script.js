@@ -1,114 +1,114 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    // --- Variáveis para a Máquina de Escrever ---
-    const bioElement = document.getElementById('bio');
-    // Certifica-se de que o elemento existe antes de continuar
-    if (!bioElement) {
-        console.error("Elemento com ID 'bio' não encontrado.");
-        return; 
-    }
-
+    // --- Parte 1: Variáveis para a Máquina de Escrever ---
+    const bioElement = document.getElementById('info'); // MUDANÇA: Usar o #info para o IntersectionObserver
+    const bioTextElement = document.createElement('p'); // Cria um novo <p> para o texto
     const bioText = "Salve negada, aqui quem vos fala é o Luan, Tenho 16 anos, Sou preto, Jogo truco pa carai, Moro com meus pais e com a minha irmã, Estudo no colégio Julio Szymanski e faço Desenvolvimento de Sistemas.";
     let charIndex = 0;
     const typingSpeed = 30; // 30ms
     let hasTyped = false; // Flag para não digitar de novo
 
+    // Pega o <p> original do HTML para podermos inserir o novo antes dele
+    const originalBioP = document.querySelector('#info p');
+    if (originalBioP) {
+        // Insere o novo <p> (que vai ser digitado) antes do <p> original
+        bioElement.insertBefore(bioTextElement, originalBioP);
+        // Oculta o <p> original que já tem o texto completo
+        originalBioP.style.display = 'none'; 
+    } else {
+        // Se não achar o <p> original, apenas adiciona o novo
+        bioElement.appendChild(bioTextElement);
+    }
+
     // --- Função que faz a digitação ---
     function typeWriter() {
-        // Verifica se o índice ainda está dentro do texto
         if (charIndex < bioText.length) {
-            bioElement.innerHTML += bioText.charAt(charIndex);
+            bioTextElement.innerHTML += bioText.charAt(charIndex);
             charIndex++;
-            setTimeout(typeWriter, typingSpeed); // Chama a si mesma para o próximo caractere
+            setTimeout(typeWriter, typingSpeed);
         }
     }
 
-    // --- INICIAR A DIGITAÇÃO ---
-    // Verifica se a digitação já aconteceu
-    if (!hasTyped) {
-        hasTyped = true; // Define a flag como verdadeira
-        bioElement.innerHTML = ''; // Limpa o elemento caso haja algum conteúdo inicial
-        typeWriter(); // Inicia o efeito de máquina de escrever
-    }
-});
-
-    // --- Exemplo 1: Animação de Entrada ao Rolar (COM ATUALIZAÇÃO) ---
-
-    // Seleciona todas as seções que queremos animar
+    // --- Parte 2: Animação de Entrada ao Rolar ---
     const sections = document.querySelectorAll('#info, #gallery, #social');
 
-    // Configura o "Observador"
     const observerOptions = {
-        root: null, // Observa a viewport (tela)
+        root: null,
         rootMargin: '0px',
-        threshold: 0.1 // Ativa quando 10% do elemento estiver visível
+        threshold: 0.1 // Ativa com 10% visível
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
-            // Se o elemento entrou na tela (isIntersecting)
             if (entry.isIntersecting) {
-                // Adiciona a classe que ativa a animação CSS
                 entry.target.classList.add('is-visible');
 
-                // --- ATUALIZAÇÃO: Iniciar a digitação ---
-                // Se o elemento que apareceu é o #info E ainda não digitamos
+                // ATIVAÇÃO: Iniciar a digitação quando #info aparecer
                 if (entry.target.id === 'info' && !hasTyped) {
-                    hasTyped = true; // Marca como "já digitei"
-                    typeWriter();    // Chama a função de digitação
+                    hasTyped = true;
+                    typeWriter(); // Chama a função de digitação
                 }
-                // --- Fim da Atualização ---
 
-                // Opcional: Para de observar o elemento depois que ele animou
-                observer.unobserve(entry.target);
+                observer.unobserve(entry.target); // Para de observar após animar
             }
         });
     }, observerOptions);
 
-    // Coloca o Observador para "assistir" cada seção
     sections.forEach(section => {
-        // Adiciona a classe de animação inicial a todas as seções
-        section.classList.add('animate-on-scroll');
+        section.classList.add('animate-on-scroll'); // Adiciona classe base
         observer.observe(section);
     });
 
-    // --- Exemplo 2: Efeito de Hover nas Fotos da Galeria ---
-
+    // --- Parte 3: Efeito de Hover nas Fotos da Galeria ---
     const galleryImages = document.querySelectorAll('.gallery-container img');
 
     galleryImages.forEach(img => {
-
-        // Define a animação de "crescer"
         const growAnimation = img.animate(
             [
                 { transform: 'scale(1)', filter: 'brightness(1)' },
                 { transform: 'scale(1.05)', filter: 'brightness(1.1)' }
             ],
             {
-                duration: 300, // 300ms de duração
-                fill: 'forwards', // Mantém o estado final
+                duration: 300,
+                fill: 'forwards',
                 easing: 'ease-out'
             }
         );
-        // Pausa a animação imediatamente
-        growAnimation.pause();
+        growAnimation.pause(); // Pausa a animação
 
-        // Toca a animação quando o mouse entra
         img.addEventListener('mouseenter', () => {
             growAnimation.play();
-            growAnimation.playbackRate = 1; // Direção: normal
+            growAnimation.playbackRate = 1;
         });
 
-        // Reverte a animação quando o mouse sai
         img.addEventListener('mouseleave', () => {
-            // Se já estiver tocando, reverte, senão, toca ao contrário
             if (growAnimation.playState === 'finished') {
                 growAnimation.reverse();
             } else {
-                growAnimation.playbackRate = -1; // Direção: reversa
+                growAnimation.playbackRate = -1;
                 growAnimation.play();
             }
         });
     });
 
-});
+    // --- Parte 4: NOVA ANIMAÇÃO (Foto de Perfil Flutuante) ---
+    const profilePic = document.querySelector('.profile-pic');
+    
+    if (profilePic) {
+        profilePic.animate(
+            [
+                // Keyframes
+                { transform: 'translateY(0px)' },
+                { transform: 'translateY(-8px)' },
+                { transform: 'translateY(0px)' }
+            ],
+            {
+                // Opções
+                duration: 3500, // Duração de 3.5 segundos
+                iterations: Infinity, // Repete para sempre
+                easing: 'ease-in-out' // Suaviza o início e o fim
+            }
+        );
+    }
+
+}); // Fim do 'DOMContentLoaded'
